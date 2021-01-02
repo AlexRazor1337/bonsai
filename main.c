@@ -9,7 +9,7 @@
 #define BUFF_SIZE 256
 
 
-long double get_cpu_util() {
+static long double get_cpu_util() {
     long double a[4], b[4], loadavg;
     
     FILE *stat = fopen("/proc/stat","r");
@@ -27,7 +27,7 @@ long double get_cpu_util() {
 }
 
 
-void get_mem(int *avaiableRAM, int *totalRAM) {
+static void get_mem(int *avaiableRAM, int *totalRAM) {
     FILE *meminfo;
     meminfo = fopen("/proc/meminfo", "rt");
     fscanf(meminfo, "%*s %d\n %*s %*s %*d %*s\n %*s %d", totalRAM, avaiableRAM);
@@ -36,7 +36,7 @@ void get_mem(int *avaiableRAM, int *totalRAM) {
 }
 
 
-void get_time(char *buf) {
+static void get_time(char *buf) {
     time_t rawtime;
     
     time(&rawtime);
