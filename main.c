@@ -28,8 +28,7 @@ static long double get_cpu_util() {
 
 
 static void get_mem(int *avaiableRAM, int *totalRAM) {
-    FILE *meminfo;
-    meminfo = fopen("/proc/meminfo", "rt");
+    FILE *meminfo = fopen("/proc/meminfo", "rt");
     fscanf(meminfo, "%*s %d\n %*s %*s %*d %*s\n %*s %d", totalRAM, avaiableRAM);
     
     fclose(meminfo);
@@ -37,7 +36,7 @@ static void get_mem(int *avaiableRAM, int *totalRAM) {
 
 
 static void get_time(char *buf) {
-    time_t rawtime;
+    static time_t rawtime;
     
     time(&rawtime);
     strftime(buf, 32, "%a %d-%m %H:%M:%S", localtime(&rawtime));
@@ -77,7 +76,8 @@ int main() {
         fclose(file);
         
         printw("\n\tCPU Utilization: %.2Lf%%\n", get_cpu_util() * 100);
-        printw("\tUsed RAM: %d MB \n\tTotal RAM: %d MB (%.2f%% used)\n", totalRAM/1024 - avaiableRAM/1024, totalRAM/1024, ((double) (totalRAM/1024 - avaiableRAM/1024) / (totalRAM/1024)) * 100);
+        // bitshifting instead of dividing by 1024
+        printw("\tUsed RAM: %d MB \n\tTotal RAM: %d MB (%.2f%% used)\n", (totalRAM >> 10) - (avaiableRAM >> 10), (totalRAM >> 10), ((double) ((totalRAM >> 10) - (avaiableRAM >> 10)) / (totalRAM >> 10)) * 100);
         
         refresh();
     }
