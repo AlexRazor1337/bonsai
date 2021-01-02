@@ -36,7 +36,7 @@ static void get_mem(int *avaiableRAM, int *totalRAM) {
 
 
 static void get_time(char *buf) {
-    static time_t rawtime;
+    time_t rawtime;
     
     time(&rawtime);
     strftime(buf, 32, "%a %d-%m %H:%M:%S", localtime(&rawtime));
